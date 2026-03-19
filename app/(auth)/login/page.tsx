@@ -43,6 +43,32 @@ function LoginContent() {
     return () => clearInterval(interval)
   }, [loading])
 
+  useEffect(() => {
+    const { data: { subscription } } =
+      supabase.auth.onAuthStateChange(
+        (event, session) => {
+          if (event === 'SIGNED_IN' && session) {
+            window.location.replace('/dashboard')
+          }
+        }
+      )
+    return () => subscription.unsubscribe()
+  }, [])
+
+  useEffect(() => {
+    const check = async () => {
+      const { data: { session } } =
+        await supabase.auth.getSession()
+      if (session) {
+        window.location.replace('/dashboard')
+      }
+    }
+
+    check()
+    const interval = setInterval(check, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
   async function handlePasswordLogin(e: React.FormEvent) {
     e.preventDefault()
     setError(null)

@@ -38,6 +38,18 @@ export default function InstallPage() {
   const isAndroid = typeof navigator !== 'undefined' && /Android/.test(navigator.userAgent)
 
   useEffect(() => {
+    const { data: { subscription } } =
+      supabase.auth.onAuthStateChange(
+        (event, session) => {
+          if (event === 'SIGNED_IN' && session) {
+            window.location.replace('/dashboard')
+          }
+        }
+      )
+    return () => subscription.unsubscribe()
+  }, [])
+
+  useEffect(() => {
     let mounted = true
 
     const timer = window.setInterval(() => {
