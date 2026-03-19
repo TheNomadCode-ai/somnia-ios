@@ -5,8 +5,16 @@ const config: CapacitorConfig = {
   appName: 'Somnia',
   webDir: 'public',
   server: {
-    url: 'https://www.somniavault.me/dashboard',
+    url: 'https://www.somniavault.me',
     cleartext: false,
+    androidScheme: 'https',
+  },
+  plugins: {
+    LocalNotifications: {
+      smallIcon: 'ic_stat_icon_config_sample',
+      iconColor: '#c9a84c',
+      sound: 'default',
+    },
   },
 };
 

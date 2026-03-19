@@ -103,7 +103,14 @@ function LoginContent() {
     setMissingAccountError(false)
     setLoading(true)
 
-    const redirectTo = 'https://www.somniavault.me/install'
+    const isNativeApp =
+      window.navigator.userAgent.includes('capacitor') ||
+      (window as typeof window & { Capacitor?: unknown }).Capacitor !== undefined
+
+    const redirectTo = isNativeApp
+      ? 'me.somniavault.app://login-callback'
+      : `${window.location.origin}/auth/callback`
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo },
